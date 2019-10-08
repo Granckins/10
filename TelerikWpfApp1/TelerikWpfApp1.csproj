@@ -160,6 +160,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="CategoricalAxis.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -167,6 +171,12 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CategoricalAxis.xaml.cs">
+      <DependentUpon>CategoricalAxis.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Helpers\CategoryToBrushConverter.cs" />
+    <Compile Include="Helpers\CustomAxisLabelTemplateSelector.cs" />
+    <Compile Include="Helpers\ValueToBrushConverter.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -174,6 +184,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Model\Instruction_data.cs" />
+    <Compile Include="PlotInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

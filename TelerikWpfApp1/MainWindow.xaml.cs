@@ -98,6 +98,28 @@ namespace TelerikWpfApp1
                 Console.WriteLine("The file could not be read:");
                 Console.WriteLine(ef.Message);
             }
+            string line1 = string.Empty;
+            int start = 0;
+            int step = 20;
+            string[] stringArray = { "text1", "text2", "text3", "text4" };
+            string value = "text3";
+            List<string> lines_ = new List<string>();
+            if (File.Exists(ID.Directory_name + @"\" + ID.IP_names.First()))
+            {
+                // Read the file and display it line by line.
+                System.IO.StreamReader file = new System.IO.StreamReader(ID.Directory_name + @"\" + ID.IP_names.First(), Encoding.GetEncoding(866));
+                while ((line1 = file.ReadLine()) != null)
+                {
+                    lines_.Add(line1);
+                    int pos = Array.IndexOf(stringArray, value);
+                    if (pos > -1)
+                    {
+                        // the array contains the string and the pos variable
+                        // will have its position in the array
+                    }
+                }
+                file.Close();
+            }
         }
     }
 }

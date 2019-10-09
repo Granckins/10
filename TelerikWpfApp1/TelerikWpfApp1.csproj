@@ -184,6 +184,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Model\Instruction_data.cs" />
+    <Compile Include="Model\PV_Manager.cs" />
     <Compile Include="PlotInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

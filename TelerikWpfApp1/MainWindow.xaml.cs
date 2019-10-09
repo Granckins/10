@@ -57,7 +57,7 @@ namespace TelerikWpfApp1
             ID.IP_names = new List<string>();
             var lines = new List<string>();
 
-       
+
             try
             {   // Open the text file using a stream reader.
                 using (StreamReader sr = new StreamReader(ID.Directory_name + @"\" + ID.SPS_name, Encoding.GetEncoding(866)))
@@ -71,24 +71,24 @@ namespace TelerikWpfApp1
                         if (line.StartsWith("\\"))
                             continue;
                         else
-                        { 
+                        {
                             MatchCollection matchList = Regex.Matches(line, "\'[^\']*\'");
                             var matches = matchList.Cast<Match>().Select(match => match.Value).ToList();
                             foreach (var m in matches)
                             {
-                                ID.IP_names.Add(m.Replace("'",""));
-                               line= line.Replace(m, "");
+                                ID.IP_names.Add(m.Replace("'", ""));
+                                line = line.Replace(m, "");
                             }
-                            matches = line.Split(' ').ToList(); 
+                            matches = line.Split(' ').ToList();
                             foreach (var m in matches)
                             {
-                              if(m.Contains(".ip"))
-                                    ID.IP_names.Add(m.Replace(";",""));
+                                if (m.Contains(".ip"))
+                                    ID.IP_names.Add(m.Replace(";", ""));
 
                             }
                         }
                     }
-                  
+
 
 
                 }
@@ -104,21 +104,29 @@ namespace TelerikWpfApp1
             string[] stringArray = { "text1", "text2", "text3", "text4" };
             string value = "text3";
             List<string> lines_ = new List<string>();
-            if (File.Exists(ID.Directory_name + @"\" + ID.IP_names.First()))
+            tabControl1.GetData();
+            foreach (var f in ID.IP_names)
             {
-                // Read the file and display it line by line.
-                System.IO.StreamReader file = new System.IO.StreamReader(ID.Directory_name + @"\" + ID.IP_names.First(), Encoding.GetEncoding(866));
-                while ((line1 = file.ReadLine()) != null)
+                if (File.Exists(ID.Directory_name + @"\" + f))
                 {
-                    lines_.Add(line1);
-                    int pos = Array.IndexOf(stringArray, value);
-                    if (pos > -1)
+                    // Read the file and display it line by line.
+                    System.IO.StreamReader file = new System.IO.StreamReader(ID.Directory_name + @"\" + f, Encoding.GetEncoding(866));
+                    var ddd =
+                   ID.Proc_ip_path = ID.Proc_ip_path.Concat(PV_Manager.SearchProcInPV(ID.Proc_ip_path, ID.Directory_name, f)).ToDictionary(x=>x.Key, x=>x.Value);
+                    while ((line1 = file.ReadLine()) != null)
                     {
-                        // the array contains the string and the pos variable
-                        // will have its position in the array
+                     //   lines_.Add(line1);
+                        start += step;
+                   //     int pos = Array.IndexOf(stringArray, value);
+                     //   if (pos > -1)
+                     //if(line1)
+                     //   {
+                     //       // the array contains the string and the pos variable
+                     //       // will have its position in the array
+                     //   }
                     }
+                    file.Close();
                 }
-                file.Close();
             }
         }
     }

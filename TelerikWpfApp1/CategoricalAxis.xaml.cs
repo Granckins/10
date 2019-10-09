@@ -136,13 +136,7 @@ namespace TelerikWpfApp1
         {
             var data = new ObservableCollection<PlotInfo>();
             
-                data.Add(new PlotInfo() { Category = "Main", HighValue =205, LowValue = 105 });
-            data.Add(new PlotInfo() { Category = "Main", HighValue = 175, LowValue = 125 });
-            data.Add(new PlotInfo() { Category = "Main", HighValue = 195, LowValue = 185 });
-            data.Add(new PlotInfo() { Category = "Main", HighValue = 305, LowValue = 275 });
-                data.Add(new PlotInfo() { Category = "Main3", HighValue = 15, LowValue = 0 });
-
-            data.Add(new PlotInfo() { Category = "Main4", HighValue = 15, LowValue = 0 });
+           
             return data;
         }
     }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -14,6 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Telerik.Windows.Controls;
+using TelerikWpfApp1.Helpers;
 using TelerikWpfApp1.Model;
 
 namespace TelerikWpfApp1
@@ -21,18 +23,40 @@ namespace TelerikWpfApp1
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, INotifyPropertyChanged
     {
+        public string Joke
+        {
+            get { return (string)GetValue(JokeProperty); }
+            set { SetValue(JokeProperty, value); }
+        }
+        public bool Vis
+        {
+            get { return (bool)GetValue(VisProperty); }
+            set { SetValue(VisProperty, value); }
+        }
+        public static readonly DependencyProperty JokeProperty =
+            DependencyProperty.Register("Joke", typeof(string), typeof(MainWindow), new PropertyMetadata(null));
+        public static readonly DependencyProperty VisProperty =
+                DependencyProperty.Register("Vis", typeof(bool), typeof(MainWindow), new PropertyMetadata(null));
+
+        public event PropertyChangedEventHandler PropertyChanged;
         Instruction_data ID = new Instruction_data();
         public MainWindow()
         {
             StyleManager.ApplicationTheme = new Windows8Theme();
             InitializeComponent();
+            this.DataContext = this;
+           Joke = "Путь к БИБЛ не задан";
+            Alert_icon.Visibility = Visibility.Visible;
+        }
+        public StatusUpdate Status { get; set; } = new StatusUpdate();
+        private void RadMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+
         }
 
-         
-
-        private void RadMenuItem_Click(object sender, RoutedEventArgs e)
+        private void BIBL_Click(object sender, RoutedEventArgs e)
         {
             RadOpenFolderDialog openFolderDialog = new RadOpenFolderDialog();
             openFolderDialog.Owner = Window.GetWindow(this);
@@ -41,11 +65,7 @@ namespace TelerikWpfApp1
             {
                 string folderName = openFolderDialog.FileName;
                 ID.Directory_name = folderName;
-                var fg = Directory.GetFiles(folderName, "*.sps", SearchOption.AllDirectories);
-                foreach (var f in fg)
-                {
-                    RLB_sps.Items.Add(System.IO.Path.GetFileName(f));
-                }
+                Joke = "Путь к БИБЛ: "+ ID.Directory_name;
             }
         }
 

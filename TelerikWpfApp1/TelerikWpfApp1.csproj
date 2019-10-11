@@ -176,6 +176,7 @@
     </Compile>
     <Compile Include="Helpers\CategoryToBrushConverter.cs" />
     <Compile Include="Helpers\CustomAxisLabelTemplateSelector.cs" />
+    <Compile Include="Helpers\StatusUpdate.cs" />
     <Compile Include="Helpers\ValueToBrushConverter.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

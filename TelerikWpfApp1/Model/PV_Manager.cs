@@ -8,6 +8,7 @@ namespace TelerikWpfApp1.Model
 {
    public abstract  class PV_Manager
     {
+        public string BIBL_path = "";
       public static  Dictionary<string, string> SearchProcInPV(Dictionary<string, string> D, string pathdirectory, string name)
         {
             string line = string.Empty;

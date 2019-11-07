@@ -5,7 +5,7 @@
                 xmlns:local="clr-namespace:TelerikWpfApp1" 
                 Title="Анализ ПВ" Height="381.667" Width="906.798">
     <Window.Resources>
-        <Converters:InvertBooleanToVisibilityConverter x:Key="InvertConverter"/>
+        <BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -19,7 +19,7 @@
 
 
 
-                <telerik:RadNavigationViewItem Content="Директория с ИП"  Click="RadMenuItem_Click">
+                <telerik:RadNavigationViewItem x:Name="directory_ip" Content="Директория с ИП"  Click="RadMenuItem_Click">
                     <telerik:RadNavigationViewItem.Icon>
                         <telerik:RadGlyph Glyph="&#xE901;" FontSize="16"/>
                     </telerik:RadNavigationViewItem.Icon>
@@ -67,9 +67,8 @@
                     </StatusBarItem>
                     <Separator Grid.Column="1" />
                     <StatusBarItem Grid.Column="2" >
-                        <telerik:GroupBox Visibility="{Binding Vis}"  >
-                            <telerik:RadGlyph Glyph="&#xe116;"  FontSize="16" Foreground="Red"  />
-                        </telerik:GroupBox>
+                        <telerik:RadGlyph Glyph="&#xe116;"  FontSize="16" Foreground="Red"    Visibility="{Binding Path=AlertVisible, Converter={StaticResource BoolToVisConverter} }" />
+                     
                     </StatusBarItem>
                     <StatusBarItem x:Name="Alert_icon" Grid.Column="3" IsEnabled="False">
 

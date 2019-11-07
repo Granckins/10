@@ -12,6 +12,10 @@ namespace TelerikWpfApp1.Model
         public List<string> IP_names { get; set; }
         public Dictionary<string, string> Proc_ip_path { get; set; }
         public string Directory_name { get; set; }
+        public string Bibl_name
+        {
+            get; set;
+        }
        public Instruction_data()
         {
             IP_names = new List<string>();

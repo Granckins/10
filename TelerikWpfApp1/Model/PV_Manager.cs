@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text; 
+using System.Text;
+using System.Text.RegularExpressions;
 
 namespace TelerikWpfApp1.Model
 {
@@ -23,8 +24,14 @@ namespace TelerikWpfApp1.Model
                         try
                         {
                             var arr = line.Split(' ').ToArray();
-                            if (arr.Contains("ВНЕШ"))
+                            if (arr.Contains("ВЫБ_БОИ"))
+                            {
+                             var   line1 = "fsfdsfs 'ВНЕШ' ";
+                                var result = from Match match in Regex.Matches(line1, "'[^']*'")
+                                             select match.ToString();
                                 continue;
+                            }
+                                
                             if (D.ContainsKey(arr[1]))
                                 continue;
                             Proc.Add(arr[1], pathdirectory + @"\" + name);

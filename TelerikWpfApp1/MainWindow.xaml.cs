@@ -23,8 +23,10 @@ namespace TelerikWpfApp1
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window, INotifyPropertyChanged
+    public partial class MainWindow : Window
     {
+        public ModelVisible ViewModel { get; set; }
+
         public string Joke
         {
             get { return (string)GetValue(JokeProperty); }
@@ -40,32 +42,56 @@ namespace TelerikWpfApp1
         public static readonly DependencyProperty VisProperty =
                 DependencyProperty.Register("Vis", typeof(bool), typeof(MainWindow), new PropertyMetadata(null));
 
-        public event PropertyChangedEventHandler PropertyChanged;
+      
         Instruction_data ID = new Instruction_data();
         public MainWindow()
         {
+           
             StyleManager.ApplicationTheme = new Windows8Theme();
-            InitializeComponent();
-            this.DataContext = this;
-           Joke = "Путь к БИБЛ не задан";
-            Alert_icon.Visibility = Visibility.Visible;
+            InitializeComponent(); 
+
+            ViewModel = new ModelVisible();
+
+            this.DataContext = ViewModel;
+            Joke = "Путь к БИБЛ не задан";
+            var vis = (this.DataContext as ModelVisible).AlertVisible;
+
+            (this.DataContext as ModelVisible).AlertVisible = !vis;
         }
         public StatusUpdate Status { get; set; } = new StatusUpdate();
         private void RadMenuItem_Click(object sender, RoutedEventArgs e)
         {
-
-        }
-
-        private void BIBL_Click(object sender, RoutedEventArgs e)
-        {
-            RadOpenFolderDialog openFolderDialog = new RadOpenFolderDialog();
+            RLB_sps.Items.Clear();
+           RadOpenFolderDialog openFolderDialog = new RadOpenFolderDialog();
             openFolderDialog.Owner = Window.GetWindow(this);
             openFolderDialog.ShowDialog(); 
             if (openFolderDialog.DialogResult == true)
             {
                 string folderName = openFolderDialog.FileName;
                 ID.Directory_name = folderName;
-                Joke = "Путь к БИБЛ: "+ ID.Directory_name;
+                var fg = Directory.GetFiles(folderName, "*.sps", SearchOption.AllDirectories);
+                foreach (var f in fg)
+                {
+                    RLB_sps.Items.Add(System.IO.Path.GetFileName(f));
+                }
+            }
+        }
+
+        private void BIBL_Click(object sender, RoutedEventArgs e)
+        {
+         
+
+            RadOpenFolderDialog openFolderDialog = new RadOpenFolderDialog();
+            openFolderDialog.Owner = Window.GetWindow(this);
+            openFolderDialog.ShowDialog(); 
+            if (openFolderDialog.DialogResult == true)
+            {
+                string folderName = openFolderDialog.FileName;
+                ID.Bibl_name = folderName;
+                Joke = "Путь к БИБЛ: "+ ID.Bibl_name;
+                var vis = (this.DataContext as ModelVisible).AlertVisible;
+
+                (this.DataContext as ModelVisible).AlertVisible = !vis;
             }
         }
 
@@ -126,7 +152,8 @@ namespace TelerikWpfApp1
             List<string> lines_ = new List<string>();
             tabControl1.GetData();
             foreach (var f in ID.IP_names)
-            {
+            { if (f.ToLower().Contains("библ"))
+                    continue;
                 if (File.Exists(ID.Directory_name + @"\" + f))
                 {
                     // Read the file and display it line by line.

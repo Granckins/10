@@ -9,39 +9,54 @@ namespace TelerikWpfApp1.Model
 {
    public abstract  class PV_Manager
     {
-        public string BIBL_path = "";
-      public static  Dictionary<string, string> SearchProcInPV(Dictionary<string, string> D, string pathdirectory, string name)
+        static string StripComments(string code)
         {
-            string line = string.Empty;
-            var Proc = new Dictionary<string, string>();
+            var re = @"(@(?:""[^""]*"")+|""(?:[^""\n\\]+|\\.)*""|'(?:[^'\n\\]+|\\.)*')|//.*|/\*(?s:.*?)\*/";
+            return Regex.Replace(code, re, "$1");
+        } 
+      public static Dictionary<string, string> SearchProcInPV(Dictionary<string, string> D_in,string pathdirectory, string name)
+        {
+            int i = 0;
+            var P=new Dictionary<string, string>();
             if (File.Exists(pathdirectory + @"\" + name))
             {
                 System.IO.StreamReader file = new System.IO.StreamReader(pathdirectory + @"\" + name, Encoding.GetEncoding(866));
-                while ((line = file.ReadLine()) != null)
+                var input = file.ReadToEnd();
+                 string noComments = "";
+                if (input != null)
                 {
-                   if( line.StartsWith("ПРОЦ"))
+                      noComments = StripComments(input);
+                }
+                using (StringReader reader = new StringReader(noComments))
+                {
+                    string line;
+                    while ((line = reader.ReadLine()) != null)
                     {
-                        try
+                        
+
+                     
+                        var arr = line.Split(new Char[] { ' ', '\t' }).ToArray();
+                        if ((arr.First().ToString().Contains("ПРОЦ")  || arr.First().ToString().Contains("ПРОЦЕДУРА")   ) && (Array.Exists(arr, x => x.Contains("ОБЩ")) || Array.Exists(arr, x => x.Contains("ОБЩАЯ"))))
                         {
-                            var arr = line.Split(' ').ToArray();
-                            if (arr.Contains("ВЫБ_БОИ"))
+                            i++;
+                            if(arr.Count()==1)
+                                arr = line.Split('\t').ToArray();
+                            try
                             {
-                             var   line1 = "fsfdsfs 'ВНЕШ' ";
-                                var result = from Match match in Regex.Matches(line1, "'[^']*'")
-                                             select match.ToString();
-                                continue;
-                            }
                                 
-                            if (D.ContainsKey(arr[1]))
-                                continue;
-                            Proc.Add(arr[1], pathdirectory + @"\" + name);
+
+                                if (D_in.ContainsKey(arr[1]))
+                                    continue;
+                                P.Add(arr[1], pathdirectory + @"\" + name);
+                            }
+                            catch (Exception e)
+                            {
+                            }
                         }
-                        catch (Exception e) { }                        
                     }
                 }
-
                 }
-            return Proc;
+            return P;
         }
     }
 }

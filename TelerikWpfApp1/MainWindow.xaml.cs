@@ -153,13 +153,18 @@ namespace TelerikWpfApp1
             tabControl1.GetData();
             foreach (var f in ID.IP_names)
             { if (f.ToLower().Contains("библ"))
-                    continue;
+                {
+                    System.IO.StreamReader file = new System.IO.StreamReader(ID.Bibl_name + @"\" +  System.IO.Path.GetFileName(f), Encoding.GetEncoding(866));
+                    var ddd = PV_Manager.SearchProcInPV(ID.Proc_ip_path_in, ID.Bibl_name, System.IO.Path.GetFileName(f));
+                    ID.Proc_ip_path_in = ID.Proc_ip_path_in.Concat(ddd).ToDictionary(x => x.Key, x => x.Value);
+                }
                 if (File.Exists(ID.Directory_name + @"\" + f))
                 {
                     // Read the file and display it line by line.
                     System.IO.StreamReader file = new System.IO.StreamReader(ID.Directory_name + @"\" + f, Encoding.GetEncoding(866));
-                    var ddd =
-                   ID.Proc_ip_path = ID.Proc_ip_path.Concat(PV_Manager.SearchProcInPV(ID.Proc_ip_path, ID.Directory_name, f)).ToDictionary(x=>x.Key, x=>x.Value);
+                    var ddd = PV_Manager.SearchProcInPV(ID.Proc_ip_path_in,   ID.Directory_name, f);
+                   ID.Proc_ip_path_in = ID.Proc_ip_path_in.Concat(ddd).ToDictionary(x=>x.Key, x=>x.Value);
+                 
                     while ((line1 = file.ReadLine()) != null)
                     {
                      //   lines_.Add(line1);

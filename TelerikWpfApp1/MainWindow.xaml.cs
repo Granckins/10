@@ -1,19 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Telerik.Windows.Controls;
 using TelerikWpfApp1.Helpers;
 using TelerikWpfApp1.Model;
@@ -42,13 +33,13 @@ namespace TelerikWpfApp1
         public static readonly DependencyProperty VisProperty =
                 DependencyProperty.Register("Vis", typeof(bool), typeof(MainWindow), new PropertyMetadata(null));
 
-      
+
         Instruction_data ID = new Instruction_data();
         public MainWindow()
         {
-           
+
             StyleManager.ApplicationTheme = new Windows8Theme();
-            InitializeComponent(); 
+            InitializeComponent();
 
             ViewModel = new ModelVisible();
 
@@ -62,9 +53,9 @@ namespace TelerikWpfApp1
         private void RadMenuItem_Click(object sender, RoutedEventArgs e)
         {
             RLB_sps.Items.Clear();
-           RadOpenFolderDialog openFolderDialog = new RadOpenFolderDialog();
+            RadOpenFolderDialog openFolderDialog = new RadOpenFolderDialog();
             openFolderDialog.Owner = Window.GetWindow(this);
-            openFolderDialog.ShowDialog(); 
+            openFolderDialog.ShowDialog();
             if (openFolderDialog.DialogResult == true)
             {
                 string folderName = openFolderDialog.FileName;
@@ -79,16 +70,16 @@ namespace TelerikWpfApp1
 
         private void BIBL_Click(object sender, RoutedEventArgs e)
         {
-         
+
 
             RadOpenFolderDialog openFolderDialog = new RadOpenFolderDialog();
             openFolderDialog.Owner = Window.GetWindow(this);
-            openFolderDialog.ShowDialog(); 
+            openFolderDialog.ShowDialog();
             if (openFolderDialog.DialogResult == true)
             {
                 string folderName = openFolderDialog.FileName;
                 ID.Bibl_name = folderName;
-                Joke = "Путь к БИБЛ: "+ ID.Bibl_name;
+                Joke = "Путь к БИБЛ: " + ID.Bibl_name;
                 var vis = (this.DataContext as ModelVisible).AlertVisible;
 
                 (this.DataContext as ModelVisible).AlertVisible = !vis;
@@ -139,11 +130,14 @@ namespace TelerikWpfApp1
 
                 }
             }
+
             catch (IOException ef)
             {
                 Console.WriteLine("The file could not be read:");
                 Console.WriteLine(ef.Message);
             }
+
+            PV_Manager.SearchTaskInPV(ID.Directory_name, ID.SPS_name,ID.Bibl_name);
             string line1 = string.Empty;
             int start = 0;
             int step = 20;
@@ -152,9 +146,10 @@ namespace TelerikWpfApp1
             List<string> lines_ = new List<string>();
             tabControl1.GetData();
             foreach (var f in ID.IP_names)
-            { if (f.ToLower().Contains("библ"))
+            {
+                if (f.ToLower().Contains("библ"))
                 {
-                    System.IO.StreamReader file = new System.IO.StreamReader(ID.Bibl_name + @"\" +  System.IO.Path.GetFileName(f), Encoding.GetEncoding(866));
+                    System.IO.StreamReader file = new System.IO.StreamReader(ID.Bibl_name + @"\" + System.IO.Path.GetFileName(f), Encoding.GetEncoding(866));
                     var ddd = PV_Manager.SearchProcInPV(ID.Proc_ip_path_in, ID.Bibl_name, System.IO.Path.GetFileName(f));
                     ID.Proc_ip_path_in = ID.Proc_ip_path_in.Concat(ddd).ToDictionary(x => x.Key, x => x.Value);
                 }
@@ -162,20 +157,20 @@ namespace TelerikWpfApp1
                 {
                     // Read the file and display it line by line.
                     System.IO.StreamReader file = new System.IO.StreamReader(ID.Directory_name + @"\" + f, Encoding.GetEncoding(866));
-                    var ddd = PV_Manager.SearchProcInPV(ID.Proc_ip_path_in,   ID.Directory_name, f);
-                   ID.Proc_ip_path_in = ID.Proc_ip_path_in.Concat(ddd).ToDictionary(x=>x.Key, x=>x.Value);
-                 
+                    var ddd = PV_Manager.SearchProcInPV(ID.Proc_ip_path_in, ID.Directory_name, f);
+                    ID.Proc_ip_path_in = ID.Proc_ip_path_in.Concat(ddd).ToDictionary(x => x.Key, x => x.Value);
+
                     while ((line1 = file.ReadLine()) != null)
                     {
-                     //   lines_.Add(line1);
+                        //   lines_.Add(line1);
                         start += step;
-                   //     int pos = Array.IndexOf(stringArray, value);
-                     //   if (pos > -1)
-                     //if(line1)
-                     //   {
-                     //       // the array contains the string and the pos variable
-                     //       // will have its position in the array
-                     //   }
+                        //     int pos = Array.IndexOf(stringArray, value);
+                        //   if (pos > -1)
+                        //if(line1)
+                        //   {
+                        //       // the array contains the string and the pos variable
+                        //       // will have its position in the array
+                        //   }
                     }
                     file.Close();
                 }
